@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AdminDashboard } from './components/AdminDashboard';
 import { LoginForm } from './components/LoginForm';
-import { TeacherDashboard } from './components/TeacherDashboard';
+import  TeacherDashboard  from './components/TeacherDashboard';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
