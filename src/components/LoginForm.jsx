@@ -73,14 +73,19 @@ export function LoginForm({ onLogin }) {
     <div className="flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
-              <UserCheck className="w-8 h-8 text-primary-foreground" />
-            </div>
-            <CardTitle>Smart Attendance System</CardTitle>
-            <CardDescription>
-              Please log in to access the attendance management system
-            </CardDescription>
-          </CardHeader>
+  <div className="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4">
+    <img 
+      src="/ietdavv_logo.jpeg"   // place your uploaded image in public folder
+      alt="DAVV Logo"
+      className="w-16 h-16 object-contain rounded-full"
+    />
+  </div>
+  <CardTitle>Smart Attendance System</CardTitle>
+  <CardDescription>
+    Please log in to access the attendance management system
+  </CardDescription>
+</CardHeader>
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
