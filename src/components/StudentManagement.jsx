@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import {
+  AlertTriangle,
+  CheckCircle,
+  Edit,
+  FolderOpen,
+  Search,
+  Trash2,
+  Upload,
+  UserPlus
+} from 'lucide-react';
+import { useState } from 'react';
+import { Alert, AlertDescription } from './ui/alert';
+import { Badge } from './ui/badge';
 import { Button } from './ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { Badge } from './ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
-import { Alert, AlertDescription } from './ui/alert';
-import { 
-  UserPlus, 
-  Search, 
-  Edit, 
-  Trash2, 
-  Upload,
-  AlertTriangle,
-  CheckCircle
-} from 'lucide-react';
 
 export function StudentManagement() {
   const [students, setStudents] = useState([
@@ -24,9 +25,11 @@ export function StudentManagement() {
       id: '1',
       name: 'Alice Johnson',
       rollNo: 'CS21001',
-      passoutYear: '2025',
+      year: 'III',
       branch: 'CS',
       section: 'A',
+      email: 'alice.johnson@email.com',
+      imageFolder: '/student_images/alice_johnson',
       status: 'active',
       lastSeen: new Date('2024-01-15T09:30:00'),
       encodingStatus: 'uploaded'
@@ -35,9 +38,11 @@ export function StudentManagement() {
       id: '2',
       name: 'Bob Smith',
       rollNo: 'CS21002',
-      passoutYear: '2025',
+      year: 'III',
       branch: 'CS',
       section: 'A',
+      email: 'bob.smith@email.com',
+      imageFolder: '/student_images/bob_smith',
       status: 'active',
       lastSeen: new Date('2024-01-15T09:30:00'),
       encodingStatus: 'uploaded'
@@ -46,9 +51,11 @@ export function StudentManagement() {
       id: '3',
       name: 'Charlie Brown',
       rollNo: 'IT21003',
-      passoutYear: '2025',
+      year: 'II',
       branch: 'IT',
       section: 'B',
+      email: 'charlie.brown@email.com',
+      imageFolder: '/student_images/charlie_brown',
       status: 'active',
       lastSeen: new Date('2024-01-14T14:20:00'),
       encodingStatus: 'pending'
@@ -57,9 +64,11 @@ export function StudentManagement() {
       id: '4',
       name: 'Diana Prince',
       rollNo: 'MECH21004',
-      passoutYear: '2025',
+      year: 'IV',
       branch: 'MECH',
       section: 'A',
+      email: 'diana.prince@email.com',
+      imageFolder: '/student_images/diana_prince',
       status: 'inactive',
       encodingStatus: 'error'
     }
@@ -72,20 +81,23 @@ export function StudentManagement() {
   const [newStudent, setNewStudent] = useState({
     name: '',
     rollNo: '',
-    passoutYear: '',
+    year: '',
     branch: '',
-    section: 'A'
+    section: 'A',
+    email: '',
+    imageFolder: ''
   });
 
   const filteredStudents = students.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     student.rollNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
     student.branch.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.section.toLowerCase().includes(searchTerm.toLowerCase())
+    student.section.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleAddStudent = () => {
-    if (!newStudent.name || !newStudent.rollNo || !newStudent.passoutYear || !newStudent.branch) {
+    if (!newStudent.name || !newStudent.rollNo || !newStudent.year || !newStudent.branch || !newStudent.email) {
       alert('Please fill in all required fields');
       return;
     }
@@ -100,7 +112,7 @@ export function StudentManagement() {
 
     setStudents([...students, studentData]);
     setIsAddDialogOpen(false);
-    setNewStudent({ name: '', rollNo: '', passoutYear: '', branch: '', section: 'A' });
+    setNewStudent({ name: '', rollNo: '', year: '', branch: '', section: 'A', email: '', imageFolder: '' });
   };
 
   const handleEditStudent = (student) => {
@@ -109,7 +121,7 @@ export function StudentManagement() {
   };
 
   const handleUpdateStudent = () => {
-    if (!editingStudent.name || !editingStudent.rollNo || !editingStudent.passoutYear || !editingStudent.branch) {
+    if (!editingStudent.name || !editingStudent.rollNo || !editingStudent.year || !editingStudent.branch || !editingStudent.email) {
       alert('Please fill in all required fields');
       return;
     }
@@ -182,7 +194,7 @@ export function StudentManagement() {
                     Add Student
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-md">
+                <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>Add New Student</DialogTitle>
                     <DialogDescription>
@@ -209,47 +221,78 @@ export function StudentManagement() {
                       />
                     </div>
                     <div className="grid gap-2">
-                      <Label htmlFor="passoutYear">Passout Year *</Label>
-                      <Select value={newStudent.passoutYear} onValueChange={(value) => setNewStudent({ ...newStudent, passoutYear: value })}>
+                      <Label htmlFor="year">Year *</Label>
+                      <Select value={newStudent.year} onValueChange={(value) => setNewStudent({ ...newStudent, year: value })}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Passout Year" />
+                          <SelectValue placeholder="Select Year" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="2024">2024</SelectItem>
-                          <SelectItem value="2025">2025</SelectItem>
-                          <SelectItem value="2026">2026</SelectItem>
-                          <SelectItem value="2027">2027</SelectItem>
-                          <SelectItem value="2028">2028</SelectItem>
+                          <SelectItem value="I">I Year</SelectItem>
+                          <SelectItem value="II">II Year</SelectItem>
+                          <SelectItem value="III">III Year</SelectItem>
+                          <SelectItem value="IV">IV Year</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
+                 <div className="grid gap-2">
+  <Label htmlFor="branch">Branch *</Label>
+  <Select value={newStudent.branch} onValueChange={(value) => setNewStudent({ ...newStudent, branch: value })}>
+    <SelectTrigger>
+      <SelectValue placeholder="Select Branch" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="CS">Computer Science (CS)</SelectItem>
+      <SelectItem value="IT">Information Technology (IT)</SelectItem>
+      <SelectItem value="ETC">Electronics & Telecom (ETC)</SelectItem>
+      <SelectItem value="EI">Electronics & Instrumentation (EI)</SelectItem>
+      <SelectItem value="MECH">Mechanical Engineering (MECH)</SelectItem>
+      <SelectItem value="CIVIL">Civil Engineering (CIVIL)</SelectItem>
+    </SelectContent>
+  </Select>
+</div>
+
+{/* Conditional Rendering for Section */}
+{['CS', 'IT', 'ETC'].includes(newStudent.branch) && (
+  <div className="grid gap-2">
+    <Label htmlFor="section">Section</Label>
+    <Select 
+      value={newStudent.section} 
+      onValueChange={(value) => setNewStudent({ ...newStudent, section: value })}
+    >
+      <SelectTrigger>
+        <SelectValue placeholder="Select Section" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="A">Section A</SelectItem>
+        <SelectItem value="B">Section B</SelectItem>
+      </SelectContent>
+    </Select>
+  </div>
+)}
                     <div className="grid gap-2">
-                      <Label htmlFor="branch">Branch *</Label>
-                      <Select value={newStudent.branch} onValueChange={(value) => setNewStudent({ ...newStudent, branch: value })}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Branch" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="CS">Computer Science (CS)</SelectItem>
-                          <SelectItem value="IT">Information Technology (IT)</SelectItem>
-                          <SelectItem value="ETC">Electronics & Telecom (ETC)</SelectItem>
-                          <SelectItem value="EI">Electronics & Instrumentation (EI)</SelectItem>
-                          <SelectItem value="MECH">Mechanical Engineering (MECH)</SelectItem>
-                          <SelectItem value="CIVIL">Civil Engineering (CIVIL)</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={newStudent.email}
+                        onChange={(e) => setNewStudent({ ...newStudent, email: e.target.value })}
+                        placeholder="student@email.com"
+                      />
                     </div>
                     <div className="grid gap-2">
-                      <Label htmlFor="section">Section</Label>
-                      <Select value={newStudent.section} onValueChange={(value) => setNewStudent({ ...newStudent, section: value })}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Section" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="A">Section A</SelectItem>
-                          <SelectItem value="B">Section B</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Label htmlFor="imageFolder" className="flex items-center gap-2">
+                        <FolderOpen className="w-4 h-4" />
+                        Image Folder
+                      </Label>
+                      <Input
+                        id="imageFolder"
+                        value={newStudent.imageFolder}
+                        onChange={(e) => setNewStudent({ ...newStudent, imageFolder: e.target.value })}
+                        placeholder="/student_images/student_name"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Path to the folder containing student's images
+                      </p>
                     </div>
                   </div>
                   <DialogFooter>
@@ -266,7 +309,7 @@ export function StudentManagement() {
         
         {/* Edit Student Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Edit Student</DialogTitle>
               <DialogDescription>
@@ -294,17 +337,16 @@ export function StudentManagement() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="edit-passoutYear">Passout Year *</Label>
-                  <Select value={editingStudent.passoutYear} onValueChange={(value) => setEditingStudent({ ...editingStudent, passoutYear: value })}>
+                  <Label htmlFor="edit-year">Year *</Label>
+                  <Select value={editingStudent.year} onValueChange={(value) => setEditingStudent({ ...editingStudent, year: value })}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select Passout Year" />
+                      <SelectValue placeholder="Select Year" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="2024">2024</SelectItem>
-                      <SelectItem value="2025">2025</SelectItem>
-                      <SelectItem value="2026">2026</SelectItem>
-                      <SelectItem value="2027">2027</SelectItem>
-                      <SelectItem value="2028">2028</SelectItem>
+                      <SelectItem value="I">I Year</SelectItem>
+                      <SelectItem value="II">II Year</SelectItem>
+                      <SelectItem value="III">III Year</SelectItem>
+                      <SelectItem value="IV">IV Year</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -336,6 +378,31 @@ export function StudentManagement() {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-email">Email *</Label>
+                  <Input
+                    id="edit-email"
+                    type="email"
+                    value={editingStudent.email}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, email: e.target.value })}
+                    placeholder="student@email.com"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-imageFolder" className="flex items-center gap-2">
+                    <FolderOpen className="w-4 h-4" />
+                    Image Folder
+                  </Label>
+                  <Input
+                    id="edit-imageFolder"
+                    value={editingStudent.imageFolder}
+                    onChange={(e) => setEditingStudent({ ...editingStudent, imageFolder: e.target.value })}
+                    placeholder="/student_images/student_name"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Path to the folder containing student's images
+                  </p>
+                </div>
               </div>
             )}
             <DialogFooter>
@@ -351,7 +418,7 @@ export function StudentManagement() {
           <div className="flex items-center gap-2">
             <Search className="w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Search students by name, roll no, branch, or section..."
+              placeholder="Search students by name, roll no, branch, section, or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="max-w-sm"
@@ -365,12 +432,12 @@ export function StudentManagement() {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Roll No</TableHead>
-                  <TableHead>Passout Year</TableHead>
+                  <TableHead>Year</TableHead>
                   <TableHead>Branch</TableHead>
                   <TableHead>Section</TableHead>
+                  <TableHead>Email</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Face Encoding</TableHead>
-                  <TableHead>Last Seen</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -379,16 +446,27 @@ export function StudentManagement() {
                   <TableRow key={student.id}>
                     <TableCell>
                       <div className="font-medium">{student.name}</div>
+                      {student.imageFolder && (
+                        <div className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                          <FolderOpen className="w-3 h-3" />
+                          {student.imageFolder}
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline">{student.rollNo}</Badge>
                     </TableCell>
-                    <TableCell>{student.passoutYear}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{student.year} Year</Badge>
+                    </TableCell>
                     <TableCell>
                       <Badge variant="secondary">{student.branch}</Badge>
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline">Section {student.section}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">{student.email}</div>
                     </TableCell>
                     <TableCell>
                       <Badge 
@@ -404,18 +482,6 @@ export function StudentManagement() {
                     </TableCell>
                     <TableCell>
                       {getEncodingStatusBadge(student.encodingStatus)}
-                    </TableCell>
-                    <TableCell>
-                      {student.lastSeen ? (
-                        <div className="text-sm">
-                          <div>{student.lastSeen.toLocaleDateString()}</div>
-                          <div className="text-muted-foreground">
-                            {student.lastSeen.toLocaleTimeString()}
-                          </div>
-                        </div>
-                      ) : (
-                        <span className="text-muted-foreground">Never</span>
-                      )}
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-2">
