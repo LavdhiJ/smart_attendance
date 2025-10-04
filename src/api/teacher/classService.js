@@ -14,7 +14,7 @@ export const classService = {
     });
     if (academicYear) params.append('academic_year', academicYear);
     
-    const response = await axios.get(`/api/teacher/class-subjects?${params}`);
+    const response = await axios.get(`/teacher/class-subjects?${params}`);
     return response.data;
   },
 };

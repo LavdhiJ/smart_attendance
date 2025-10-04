@@ -7,7 +7,7 @@ export const reportService = {
     if (startDate) params.append('start_date', startDate);
     if (endDate) params.append('end_date', endDate);
     
-    const response = await axios.get(`/api/teacher/attendance/report?${params}`);
+    const response = await axios.get(`/teacher/attendance/report?${params}`);
     return response.data;
   },
 
@@ -16,7 +16,7 @@ export const reportService = {
     const params = new URLSearchParams({ class_subject_id: classSubjectId });
     if (date) params.append('date', date);
     
-    const response = await axios.get(`/api/teacher/attendance/by-date?${params}`);
+    const response = await axios.get(`/teacher/attendance/by-date?${params}`);
     return response.data;
   },
 };

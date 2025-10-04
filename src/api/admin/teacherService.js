@@ -7,20 +7,23 @@ import axios from '../axiosConfig';
 export const teacherService = {
   // Get all teachers
   getTeachers: async () => {
-    const response = await axios.get('/api/admin/teachers');
+    const response = await axios.get('/admin/teachers');
     return response.data;
   },
 
   // Add teacher
-  addTeacher: async (username, password) => {
-    const response = await axios.post('/api/admin/teachers', { username, password });
+  addTeacher: async ({username, password}) => {
+    const response = await axios.post('/admin/teachers', { username, password });
     return response.data;
   },
 
   // Update teacher
-  updateTeacher: async (teacherId, data) => {
-    const response = await axios.put(`/api/admin/teachers/${teacherId}`, data);
+   // Update teacher
+  updateTeacher: async (teacherId, { username, password }) => {
+    const payload = { username };
+    if (password) payload.password = password; // Only send password if provided
+
+    const response = await axios.put(`/admin/teachers/${teacherId}`, payload);
     return response.data;
-  },
-};
+  }};
 

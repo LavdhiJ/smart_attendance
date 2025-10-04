@@ -11,25 +11,25 @@ export const classSubjectService = {
     if (filters.academic_year) params.append('academic_year', filters.academic_year);
     if (filters.branch_id) params.append('branch_id', filters.branch_id);
     
-    const response = await axios.get(`/api/admin/class-subjects?${params}`);
+    const response = await axios.get(`/admin/class-subjects?${params}`);
     return response.data;
   },
 
   // Assign subject to class
   assignSubject: async (data) => {
-    const response = await axios.post('/api/admin/class-subjects', data);
+    const response = await axios.post('/admin/class-subjects', data);
     return response.data;
   },
 
   // Update mapping
   updateMapping: async (classSubjectId, data) => {
-    const response = await axios.put(`/api/admin/class-subjects/${classSubjectId}`, data);
+    const response = await axios.put(`/admin/class-subjects/${classSubjectId}`, data);
     return response.data;
   },
 
   // Delete mapping
   deleteMapping: async (classSubjectId) => {
-    const response = await axios.delete(`/api/admin/class-subjects/${classSubjectId}`);
+    const response = await axios.delete(`/admin/class-subjects/${classSubjectId}`);
     return response.data;
   },
 };

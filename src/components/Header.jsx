@@ -6,7 +6,7 @@ export default function Header({ user, onLogout }) {
       <nav className="space-x-6">
         {user.role === "teacher" ? (
           <>
-            <a href="/teacher-dashboard" className="hover:text-gray-400">Dashboard</a>
+            <a href="/teacher-dashboard" className="hover:text-gray-400">D ashboard</a>
             <a href="/teacher-courses" className="hover:text-gray-400">Courses</a>
           </>
         ) : (

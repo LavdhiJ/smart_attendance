@@ -3,25 +3,26 @@ import axios from '../axiosConfig';
 export const dropdownService = {
   // Get branches
   getBranches: async () => {
-    const response = await axios.get('/api/branches');
+    const response = await axios.get('/branches');
     return response.data;
   },
 
   // Get years
   getYears: async () => {
-    const response = await axios.get('/api/dropdowns/years');
+    const response = await axios.get('/dropdowns/years');
     return response.data;
   },
 
   // Get sections
   getSections: async () => {
-    const response = await axios.get('/api/dropdowns/sections');
+    const response = await axios.get('/dropdowns/sections');
     return response.data;
   },
 
   // Get semesters
   getSemesters: async () => {
-    const response = await axios.get('/api/dropdowns/semesters');
+    const response = await axios.get('/dropdowns/semesters');
     return response.data;
   },
 };
+    
